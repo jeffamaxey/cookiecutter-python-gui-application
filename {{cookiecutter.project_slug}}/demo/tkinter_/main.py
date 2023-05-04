@@ -33,26 +33,10 @@ fontBackground = "#FFFFFF"
 
 def make_tag():
     current_tags = text.tag_names()
-    if "bold" in current_tags:
-        weight = "bold"
-    else:
-        weight = "normal"
-
-    if "italic" in current_tags:
-        slant = "italic"
-    else:
-        slant = "roman"
-
-    if "underline" in current_tags:
-        underline = 1
-    else:
-        underline = 0
-
-    if "overstrike" in current_tags:
-        overstrike = 1
-    else:
-        overstrike = 0
-
+    weight = "bold" if "bold" in current_tags else "normal"
+    slant = "italic" if "italic" in current_tags else "roman"
+    underline = 1 if "underline" in current_tags else 0
+    overstrike = 1 if "overstrike" in current_tags else 0
     big_font = font.Font(text, text.cget("font"))
     big_font.configure(
         slant=slant,
@@ -93,7 +77,7 @@ def save(event=None):
     if file_name == "":
         path = filedialog.asksaveasfilename()
         file_name = path
-    master.title(file_name + " - Script Editor")
+    master.title(f"{file_name} - Script Editor")
     write = open(file_name, mode="w")
     write.write(text.get("1.0", END))
 
@@ -126,7 +110,7 @@ def rename(event=None):
     new_name = simpledialog.askstring("Rename", "Enter new name")
     os.rename(file_name, str(path) + str(new_name))
     file_name = str(path) + str(new_name)
-    master.title(file_name + " - Script Editor")
+    master.title(f"{file_name} - Script Editor")
 
 
 def close(event=None):

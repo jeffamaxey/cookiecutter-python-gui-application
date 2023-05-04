@@ -68,7 +68,9 @@ class SourceCode(wx.Panel):
         pagesizer = wx.BoxSizer(wx.VERTICAL)
         self.source = source = wx.TextCtrl(self, *args, **kwargs)
         top_bar_container = wx.BoxSizer(wx.HORIZONTAL)
-        label = wx.StaticText(self, label=('Source: '+windowurl), style=wx.ST_ELLIPSIZE_END)
+        label = wx.StaticText(
+            self, label=f'Source: {windowurl}', style=wx.ST_ELLIPSIZE_END
+        )
         new = wx.Button(self, label='+', size=(30, 30), style=wx.BORDER_NONE)
         new_tip = wx.ToolTip('Open a new tab')
         new.SetToolTip(new_tip)
@@ -234,9 +236,9 @@ class WebPage(wx.Panel):
     def show_source(self, event):
         title = self.html_window.GetCurrentTitle()
         if title == "":
-            title = ("WxPyBrowser - Source for "+self.html_window.GetCurrentURL())
+            title = f"WxPyBrowser - Source for {self.html_window.GetCurrentURL()}"
         else:
-            title = ("WxPyBrowser - Source for "+self.html_window.GetCurrentTitle())
+            title = f"WxPyBrowser - Source for {self.html_window.GetCurrentTitle()}"
         page = SourceCode(self.parent, windowname=title, windowurl=self.html_window.GetCurrentURL(), history_var=self.visited, style=wx.TE_MULTILINE | wx.TE_READONLY | wx.HSCROLL)
         page.source.SetValue(self.html_window.GetPageSource())
         self.parent.AddPage(page, caption=title, select=False)
@@ -380,10 +382,8 @@ class WebPage(wx.Panel):
 
     def on_select(self):
         title = self.html_window.GetCurrentTitle()
-        divider = ""
-        if title != "":
-            divider = " - "
-        self.frame.SetTitle("WxPyBrowser"+divider+title)
+        divider = " - " if title != "" else ""
+        self.frame.SetTitle(f"WxPyBrowser{divider}{title}")
 
     def on_close(self):
         if self.html_window.IsBusy():
@@ -396,7 +396,7 @@ class WebPage(wx.Panel):
     def loadpage(self, event):
         url = self.url_field.GetValue()
         if (not url.startswith("https://") and not url.startswith("http://")):
-            url = "https://"+url
+            url = f"https://{url}"
         self.load_url(url)
 
 
